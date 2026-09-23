@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GigFinance - Smart Financial Dashboard & Tracker for Gig Workers</title>
+  <meta name="description" content="GigFinance is a modern financial tracker and wealth management website designed for delivery partners, ride-hailing drivers, and freelance gig workers." />
+  <meta name="keywords" content="gig economy, finance tracker, Swiggy, Zomato, Uber, Zepto, delivery partners, freelance accounting, expense tracker" />
+  <meta name="author" content="Tinu Rathore" />
+  <meta name="theme-color" content="#2563EB" />
+
+  <!-- Google Fonts: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <div class="app-wrapper">
+
+    <!-- Top Navigation Bar -->
+    <header class="navbar">
+      <div class="brand-section">
+        <div class="brand-logo-badge" aria-hidden="true">💼</div>
+        <div class="brand-title-wrap">
+          <h1>
+            GigFinance
+            <span class="version-pill">WEB V1.0</span>
+          </h1>
+          <p class="brand-subtitle">Finance & Wealth Dashboard for Indian Gig Economy Workers</p>
+        </div>
+      </div>
+
+      <nav class="nav-actions">
+        <!-- User Profile Pill in Navbar -->
+        <div id="userProfileMenuWrap" class="user-profile-menu-wrap" style="display: none;">
+          <button id="userProfileBtn" class="user-profile-btn" aria-haspopup="true" aria-expanded="false">
+            <div class="user-avatar-circle" id="userAvatarIcon">🛵</div>
+            <div class="user-meta-info">
+              <span id="navUserName" class="user-name-label">User Name</span>
+              <span id="navUserOccupation" class="user-occ-label">Delivery Partner</span>
+            </div>
+            <span style="font-size: 11px; color: var(--text-muted); margin-left: 2px;">▼</span>
+          </button>
+
+          <!-- Profile Dropdown Menu -->
+          <div id="userDropdownMenu" class="user-dropdown-menu">
+            <button id="editProfileMenuBtn" class="dropdown-item-btn">
+              <span>✏️</span> Edit Occupation & Profile
+            </button>
+            <button id="switchProfileMenuBtn" class="dropdown-item-btn">
+              <span>🔄</span> Switch / Change Role
+            </button>
+            <div class="dropdown-divider"></div>
+            <button id="logoutMenuBtn" class="dropdown-item-btn" style="color: var(--expense);">
+              <span>🚪</span> Sign Out
+            </button>
+          </div>
+        </div>
+
+        <button id="themeToggleBtn" class="btn-icon" aria-label="Toggle dark/light theme" title="Switch Theme">🌙</button>
+        <button id="resetDataBtn" class="btn btn-outline" title="Reset sample demo data">🔄 Reset Data</button>
+        <button id="exportCsvBtn" class="btn btn-outline" title="Export Ledger to CSV">📥 Export CSV</button>
+        <button id="openAddIncomeBtn" class="btn btn-income">+ Add Earnings</button>
+        <button id="openAddExpenseBtn" class="btn btn-expense">− Add Expense</button>
+      </nav>
+    </header>
+
+    <!-- ================= 1. AUTH / LOGIN & ONBOARDING VIEW ================= -->
+    <section id="authView" class="auth-view-wrapper">
+      <div class="auth-card">
+        <div class="auth-header">
+          <div class="auth-icon-badge">💼</div>
+          <h2 class="auth-title">GigFinance Portal</h2>
+          <p class="auth-subtitle">Dedicated shift & financial tracking for independent gig workers & freelancers</p>
+        </div>
+
+        <!-- 2-Step Progress Stepper -->
+        <div class="auth-stepper">
+          <div id="authStep1Indicator" class="step-item active">
+            <span>👤 Step 1</span>
+            <span>Account Details</span>
+          </div>
+          <div class="step-divider"></div>
+          <div id="authStep2Indicator" class="step-item">
+            <span>💼 Step 2</span>
+            <span>Add Occupation</span>
+          </div>
+        </div>
+
+        <!-- ================= STEP 1: ACCOUNT DETAILS / LOGIN ================= -->
+        <div id="authStep1Container">
+          <!-- Auth Tabs: Create Profile vs Sign In -->
+          <div class="auth-tabs-row">
+            <button type="button" id="tabRegisterBtn" class="auth-tab-btn active">✨ Create New Profile</button>
+            <button type="button" id="tabLoginBtn" class="auth-tab-btn">🔑 Returning User Sign In</button>
+          </div>
+
+          <!-- Mode A: Create New Profile Form -->
+          <div id="registerFormWrap">
+            <div class="form-group">
+              <label class="form-label" for="authFullName">Your Full Name</label>
+              <input type="text" id="authFullName" class="form-control" placeholder="e.g. Ramesh Kumar" required />
+            </div>
+
+            <div class="calc-input-row" style="margin-top: 0; margin-bottom: 16px;">
+              <div class="form-group" style="margin-bottom: 0;">
+                <label class="form-label" for="authPhone">Mobile Number (WhatsApp/UPI)</label>
+                <input type="tel" id="authPhone" class="form-control" placeholder="+91 98765 43210" required />
+              </div>
+              <div class="form-group" style="margin-bottom: 0;">
+                <label class="form-label" for="authCity">City / Operating Zone</label>
+                <input type="text" id="authCity" class="form-control" placeholder="e.g. Bengaluru, Delhi NCR, Mumbai" />
+              </div>
+            </div>
+
+            <button type="button" id="btnGoToStep2" class="btn btn-primary" style="width: 100%; padding: 14px; font-size: 15px; margin-top: 6px;">
+              Next: Select / Add Occupation (Aap Kya Kaam Karte Hain?) ➔
+            </button>
+          </div>
+
+          <!-- Mode B: Returning User Sign In -->
+          <div id="loginFormWrap" style="display: none;">
+            <!-- Remembered Profiles Saved in Browser -->
+            <div class="saved-accounts-section">
+              <div class="saved-accounts-title">
+                <span>⚡ Saved Accounts on this Device:</span>
+              </div>
+              <div id="savedAccountsGrid" class="saved-accounts-grid">
+                <!-- Injected dynamically from data.js registered users -->
+              </div>
+            </div>
+
+            <div class="form-group" style="margin-top: 14px;">
+              <label class="form-label" for="loginSearchInput">Or Enter Mobile Number / Name</label>
+              <input type="text" id="loginSearchInput" class="form-control" placeholder="e.g. 98765 43210 or Ramesh" />
+            </div>
+
+            <button type="button" id="btnLoginDirect" class="btn btn-primary" style="width: 100%; padding: 13px; font-size: 15px;">
+              🔑 Sign In to Existing Account ➔
+            </button>
+          </div>
+        </div>
+
+        <!-- ================= STEP 2: ADD OCCUPATION ("VHO KYA HAI") ================= -->
+        <div id="authStep2Container" style="display: none;">
+          <div class="step2-user-badge">
+            <div>
+              <span style="font-size: 12px; color: var(--text-secondary);">Logging in as:</span>
+              <div id="step2UserSummary" style="font-size: 14px; font-weight: 700; color: var(--primary);">
+                Ramesh Kumar (+91 98765 43210)
+              </div>
+            </div>
+            <button type="button" id="btnBackToStep1" class="btn btn-outline" style="padding: 5px 10px; font-size: 12px;">
+              ✏️ Edit Details
+            </button>
+          </div>
+
+          <div class="occupation-grid-label">
+            <div>
+              <label class="form-label" style="margin-bottom: 2px;">What is your primary occupation? (Aapka Kaam Kya Hai?)</label>
+              <div style="font-size: 12px; color: var(--text-secondary);">Select below or enter your exact role (e.g. Delivery Boy, Freelancer, Cab Driver, etc.)</div>
+            </div>
+          </div>
+
+          <div id="occupationsGrid" class="occupations-grid">
+            <!-- Rendered dynamically from OCCUPATIONS in data.js -->
+          </div>
+
+          <!-- Custom Occupation Input if 'Other' selected or user wants custom title -->
+          <div id="customOccupationWrap" style="display: none; margin-top: 12px; margin-bottom: 16px;">
+            <label class="form-label" for="authCustomOcc">Write Your Custom Occupation / Role</label>
+            <input type="text" id="authCustomOcc" class="form-control" placeholder="e.g. Delivery boy for Swiggy, Freelance UI Designer, Auto Driver, Home Tutor" />
+          </div>
+
+          <!-- Daily Target Setting -->
+          <div class="form-group" style="margin-top: 14px; margin-bottom: 18px;">
+            <label class="form-label" for="authDailyGoal">Daily Shift Earnings Target (₹/day)</label>
+            <input type="number" id="authDailyGoal" class="form-control" value="2000" min="500" step="100" />
+          </div>
+
+          <!-- Action buttons for Step 2 -->
+          <div style="display: flex; gap: 10px; margin-top: 12px;">
+            <button type="button" id="btnBackToStep1Secondary" class="btn btn-outline" style="flex: 1; padding: 13px;">
+              ⬅️ Back
+            </button>
+            <button type="button" id="btnCompleteProfile" class="btn btn-primary" style="flex: 2; padding: 13px; font-size: 15px;">
+              💾 Save Occupation & Open Dashboard 🚀
+            </button>
+          </div>
+        </div>
+
+        <!-- Quick 1-Click Demo Profiles -->
+        <div class="demo-logins-box">
+          <div class="demo-logins-title">⚡ Instant 1-Click Demo Profiles (For Quick Testing):</div>
+          <div class="demo-buttons-row">
+            <button type="button" class="btn-demo-quick" onclick="window.quickDemoLogin('delivery')">
+              <span>🛵</span> Ramesh (Delivery Boy)
+            </button>
+            <button type="button" class="btn-demo-quick" onclick="window.quickDemoLogin('freelancer')">
+              <span>💻</span> Pooja (Tech Freelancer)
+            </button>
+            <button type="button" class="btn-demo-quick" onclick="window.quickDemoLogin('driver')">
+              <span>🚗</span> Harpreet (Cab Driver)
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 2. DASHBOARD VIEW ================= -->
+    <div id="dashboardView" style="display: none;">
+      <main>
+        <!-- Daily Shift Earnings Goal Banner -->
+        <section class="daily-goal-banner" aria-label="Daily Goal Progress">
+          <div class="goal-info-left">
+            <div class="goal-icon-badge" id="bannerOccIcon">🎯</div>
+            <div>
+              <div class="goal-title">
+                <span id="bannerGreeting">Daily Shift Earnings Target</span>
+              </div>
+              <div class="goal-desc" id="bannerOccSubtitle">Track your daily platform earnings goal for today's shifts</div>
+            </div>
+          </div>
+
+          <div class="goal-progress-wrap">
+            <div class="goal-progress-numbers">
+              <span>Achieved: <strong id="goalCurrentLabel" style="color: #38BDF8;">₹0 (0%)</strong></span>
+              <span>Target: <strong id="goalTargetLabel">₹2,000</strong></span>
+            </div>
+            <div class="progress-track">
+              <div id="goalProgressBar" class="progress-bar-fill" style="width: 0%;"></div>
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 8px;">
+            <button id="bannerChangeOccBtn" class="btn btn-outline" style="border-color: rgba(255,255,255,0.3); color:#FFFFFF; background:rgba(255,255,255,0.12);" title="Change or add your occupation">
+              💼 Change Occupation
+            </button>
+            <button id="editGoalBtn" class="btn btn-outline" style="border-color: rgba(255,255,255,0.2); color:#FFFFFF; background:rgba(255,255,255,0.06);">
+              ✏️ Change Target
+            </button>
+          </div>
+        </section>
+
+        <!-- Key Financial Metrics Cards -->
+        <section class="metrics-grid" aria-label="Key Financial Metrics">
+          <!-- 1. Net Cash Savings -->
+          <article class="metric-card highlight-dark">
+            <div class="card-top-row">
+              <span class="metric-label">Net Savings (Cash in Hand)</span>
+              <span class="metric-icon-bubble">💰</span>
+            </div>
+            <div id="netSavingsVal" class="metric-value">₹0</div>
+            <div id="netSavingsSub" class="metric-sub">Calculating savings...</div>
+          </article>
+
+          <!-- 2. Total Inflow (Earnings) -->
+          <article class="metric-card">
+            <div class="card-top-row">
+              <span class="metric-label">Total Gig Earnings (Inflow)</span>
+              <span class="metric-icon-bubble">📈</span>
+            </div>
+            <div id="totalInflowVal" class="metric-value value-inflow">₹0</div>
+            <div class="metric-sub">
+              <span class="badge-tag tag-green">Revenue Across Platforms</span>
+            </div>
+          </article>
+
+          <!-- 3. Total Outflow (Expenses) -->
+          <article class="metric-card">
+            <div class="card-top-row">
+              <span class="metric-label">Total Work Expenses (Outflow)</span>
+              <span class="metric-icon-bubble">📉</span>
+            </div>
+            <div id="totalOutflowVal" class="metric-value value-outflow">₹0</div>
+            <div class="metric-sub">
+              <span class="badge-tag tag-red">Fuel, Maintenance & Food</span>
+            </div>
+          </article>
+
+          <!-- 4. Emergency Runway Target -->
+          <article class="metric-card">
+            <div class="card-top-row">
+              <span class="metric-label">Emergency Buffer (3-Mo Runway)</span>
+              <span class="metric-icon-bubble">🛡️</span>
+            </div>
+            <div id="emergencyTargetVal" class="metric-value" style="color: var(--primary);">₹0</div>
+            <div class="metric-sub">
+              <span class="badge-tag" style="background:var(--primary-light); color:var(--primary);">Recommended Target</span>
+            </div>
+          </article>
+        </section>
+
+        <!-- Two-Column Analytics Section -->
+        <section class="analytics-grid" aria-label="Visual Financial Analytics">
+          <!-- Left: Inflow vs Outflow Trend Chart -->
+          <article class="card-panel">
+            <div class="panel-header">
+              <div>
+                <h2 class="panel-title">📊 7-Day Inflow vs Outflow Trend</h2>
+                <p class="panel-subtitle">Daily comparison of platform earnings against operational costs</p>
+              </div>
+              <div style="display: flex; gap: 10px; font-size: 11px; font-weight: 700;">
+                <span style="color: var(--income);">● Inflow (Earnings)</span>
+                <span style="color: var(--expense);">┅ Outflow (Expenses)</span>
+              </div>
+            </div>
+
+            <div id="trendChartContainer" class="chart-container">
+              <!-- Native SVG trend chart generated by JS -->
+            </div>
+
+            <!-- Platform Share Chips -->
+            <div style="margin-top: 18px; border-top: 1px solid var(--border-color); padding-top: 14px;">
+              <div style="font-size: 12px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase;">
+                Active Platform Contributions
+              </div>
+              <div id="platformChipsWrap" class="platform-chips-grid">
+                <!-- Rendered by JS -->
+              </div>
+            </div>
+          </article>
+
+          <!-- Right: Expense Category Donut & Breakdown -->
+          <article class="card-panel">
+            <div class="panel-header">
+              <div>
+                <h2 class="panel-title">🍩 Expense Distribution</h2>
+                <p class="panel-subtitle">Where your hard-earned delivery & ride money went</p>
+              </div>
+            </div>
+
+            <div id="donutChartContainer" class="chart-container">
+              <!-- Native SVG donut chart generated by JS -->
+            </div>
+
+            <!-- Breakdown Progress Legend -->
+            <div id="expenseLegendList" class="breakdown-list">
+              <!-- Rendered by JS -->
+            </div>
+          </article>
+        </section>
+
+        <!-- Transaction Ledger Section -->
+        <section class="ledger-panel" aria-label="Transaction Ledger">
+          <div class="panel-header" style="margin-bottom: 0;">
+            <div>
+              <h2 class="panel-title">
+                📋 Detailed Transaction Ledger
+                <span id="txCountBadge" class="version-pill" style="margin-left: 8px;">0 entries</span>
+              </h2>
+              <p class="panel-subtitle">All recorded shifts, client payouts, fuel bills, and maintenance receipts</p>
+            </div>
+          </div>
+
+          <!-- Toolbar: Search & Filter Tabs -->
+          <div class="ledger-toolbar">
+            <div class="toolbar-left">
+              <div class="search-box">
+                <span aria-hidden="true">🔍</span>
+                <input type="text" id="ledgerSearchInput" class="search-input" placeholder="Search by platform (Swiggy, Uber), category, or note..." />
+              </div>
+            </div>
+
+            <div class="filter-pills">
+              <button class="filter-pill active" data-filter="all">All Records</button>
+              <button class="filter-pill" data-filter="income">Inflow Only (+)</button>
+              <button class="filter-pill" data-filter="expense">Outflow Only (−)</button>
+            </div>
+          </div>
+
+          <!-- Transaction Table -->
+          <div class="table-responsive">
+            <table class="tx-table">
+              <thead>
+                <tr>
+                  <th>Title / Description</th>
+                  <th>Category</th>
+                  <th>Flow</th>
+                  <th>Date</th>
+                  <th>Amount</th>
+                  <th style="text-align: right;">Action</th>
+                </tr>
+              </thead>
+              <tbody id="txTableBody">
+                <!-- Rendered dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Gig Worker Utilities & Calculator Toolkit -->
+        <section class="toolkit-grid" aria-label="Gig Worker Toolkit">
+          <!-- 1. Fuel & Mileage Cost Calculator -->
+          <article class="calculator-card">
+            <h2 class="panel-title">⛽ Fuel & Shift Cost Calculator</h2>
+            <p class="panel-subtitle">Estimate exact fuel expenses per kilometer to price delivery shifts profitably</p>
+
+            <div class="calc-input-row">
+              <div class="calc-field-group">
+                <label for="fuelDistInput">Shift Distance (KM)</label>
+                <input type="number" id="fuelDistInput" class="calc-input" value="85" />
+              </div>
+              <div class="calc-field-group">
+                <label for="fuelMileageInput">Bike Mileage (KM/L)</label>
+                <input type="number" id="fuelMileageInput" class="calc-input" value="45" />
+              </div>
+            </div>
+
+            <div class="calc-field-group" style="margin-bottom: 16px;">
+              <label for="petrolPriceInput">Petrol Price (₹/Litre)</label>
+              <input type="number" id="petrolPriceInput" class="calc-input" value="103" />
+            </div>
+
+            <div class="calc-result-box">
+              <div>
+                <div class="calc-result-title">Estimated Shift Fuel Cost</div>
+                <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">Net vehicle operating rate: <span id="calcCostPerKm" style="color:var(--text-primary); font-weight:700;">₹2.29/km</span></div>
+              </div>
+              <div id="calcFuelCost" class="calc-result-number">₹195</div>
+            </div>
+          </article>
+
+          <!-- 2. Tax & Financial Health Advisor -->
+          <article class="calculator-card">
+            <h2 class="panel-title">💡 Gig Financial Health Guide</h2>
+            <p class="panel-subtitle">Key benchmarks recommended by financial advisors for self-employed gig workers</p>
+
+            <div style="display:flex; flex-direction:column; gap:12px; margin-top:14px;">
+              <div class="calc-result-box" style="justify-content:flex-start; gap:14px;">
+                <div style="font-size:24px;">🛡️</div>
+                <div>
+                  <strong style="font-size:13px; color:var(--text-primary);">Maintain 3-Month Expense Runway</strong>
+                  <p style="font-size:11.5px; color:var(--text-secondary); margin-top:2px;">Keeps you protected during bike repairs, bad weather, or app downtimes.</p>
+                </div>
+              </div>
+
+              <div class="calc-result-box" style="justify-content:flex-start; gap:14px;">
+                <div style="font-size:24px;">📑</div>
+                <div>
+                  <strong style="font-size:13px; color:var(--text-primary);">Save Receipts for Income Tax Deductions</strong>
+                  <p style="font-size:11.5px; color:var(--text-secondary); margin-top:2px;">Fuel, smartphone data bills, and maintenance can reduce taxable income under Section 44ADA.</p>
+                </div>
+              </div>
+
+              <div class="calc-result-box" style="justify-content:flex-start; gap:14px;">
+                <div style="font-size:24px;">⚖️</div>
+                <div>
+                  <strong style="font-size:13px; color:var(--text-primary);">Multi-App Balancing</strong>
+                  <p style="font-size:11.5px; color:var(--text-secondary); margin-top:2px;">Switching between food, grocery (Zepto/Blinkit), and rides prevents dependency on one platform's algorithm.</p>
+                </div>
+              </div>
+            </div>
+          </article>
+        </section>
+      </main>
+
+      <!-- Footer -->
+      <footer class="app-footer">
+        <p><strong>GigFinance</strong> — Built for the Indian Gig Economy | Entrepreneurship Development Project</p>
+        <p style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">Data is saved locally in your browser. No external servers or telemetry.</p>
+      </footer>
+    </div>
+
+  </div>
+
+  <!-- Modal Backdrop for Add Transaction -->
+  <div id="addModalBackdrop" class="modal-backdrop">
+    <div class="modal-container">
+      <div class="modal-head">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <span id="modalTypeBadge" class="badge-tag tag-green">+ INFLOW</span>
+          <h3 id="modalHeadline" class="modal-headline">Log Gig Earnings</h3>
+        </div>
+        <button id="closeModalBtn" class="btn-icon" aria-label="Close dialog">✕</button>
+      </div>
+
+      <!-- Amount -->
+      <div class="form-group">
+        <label class="form-label">Amount (₹)</label>
+        <div class="amount-input-shell">
+          <span class="currency-sym">₹</span>
+          <input type="number" id="modalAmountInput" class="amount-input-control" placeholder="0.00" autofocus />
+        </div>
+      </div>
+
+      <!-- Category / Platform Chips -->
+      <div class="form-group">
+        <label id="modalCatLabel" class="form-label">Gig Platform / Source</label>
+        <div id="modalChipsGrid" class="modal-chips-grid">
+          <!-- Chips rendered dynamically -->
+        </div>
+      </div>
+
+      <!-- Title / Custom Description -->
+      <div class="form-group">
+        <label class="form-label">Title / Shift Details (Optional)</label>
+        <input type="text" id="modalTitleInput" class="form-control" placeholder="e.g. Swiggy Weekend Surge, Airport Trips, Shell Petrol" />
+      </div>
+
+      <!-- Notes -->
+      <div class="form-group">
+        <label class="form-label">Notes & Mileage Info (Optional)</label>
+        <input type="text" id="modalNotesInput" class="form-control" placeholder="e.g. 14 orders, ₹350 tips included" />
+      </div>
+
+      <!-- Date -->
+      <div class="form-group">
+        <label class="form-label">Date</label>
+        <input type="date" id="modalDateInput" class="form-control" />
+      </div>
+
+      <!-- Modal Actions -->
+      <div class="modal-footer">
+        <button type="button" id="cancelModalBtn" class="btn btn-outline" style="flex:1;">Cancel</button>
+        <button type="button" id="saveModalBtn" class="btn btn-income" style="flex:2;">Save Record</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Backdrop for Edit Profile / Change Occupation -->
+  <div id="editProfileModalBackdrop" class="modal-backdrop">
+    <div class="modal-container" style="max-width: 600px;">
+      <div class="modal-head">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <span class="badge-tag" style="background:var(--primary-light); color:var(--primary);">PROFILE</span>
+          <h3 class="modal-headline">Edit Gig Occupation & Profile</h3>
+        </div>
+        <button id="closeEditProfileBtn" class="btn-icon" aria-label="Close dialog">✕</button>
+      </div>
+
+      <form id="editProfileForm">
+        <div class="form-group">
+          <label class="form-label" for="editProfileName">Full Name</label>
+          <input type="text" id="editProfileName" class="form-control" required />
+        </div>
+
+        <div class="calc-input-row" style="margin-top: 0; margin-bottom: 16px;">
+          <div class="form-group" style="margin-bottom: 0;">
+            <label class="form-label" for="editProfilePhone">Phone / Mobile</label>
+            <input type="tel" id="editProfilePhone" class="form-control" required />
+          </div>
+          <div class="form-group" style="margin-bottom: 0;">
+            <label class="form-label" for="editProfileCity">City / Zone</label>
+            <input type="text" id="editProfileCity" class="form-control" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Update Your Gig Occupation</label>
+          <div id="editOccupationsGrid" class="occupations-grid">
+            <!-- Rendered dynamically -->
+          </div>
+
+          <div id="editCustomOccWrap" style="display: none; margin-top: 10px;">
+            <label class="form-label" for="editCustomOccInput">Specify Occupation</label>
+            <input type="text" id="editCustomOccInput" class="form-control" />
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" id="cancelEditProfileBtn" class="btn btn-outline" style="flex:1;">Cancel</button>
+          <button type="submit" class="btn btn-primary" style="flex:2;">Save Profile Updates</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Notification Box -->
+  <div id="toastNotice" class="toast-notice" role="alert">
+    Notification message
+  </div>
+
+  <!-- Application Scripts (ES Modules) -->
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

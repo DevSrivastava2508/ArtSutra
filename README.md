@@ -8,28 +8,23 @@ The project is being developed as part of an Entrepreneurship Development projec
 
 Gig workers often receive income from different jobs or platforms and may have regular work-related expenses. Keeping track of these transactions manually can make it difficult to understand their actual earnings and spending.
 
-GigFinance aims to provide a simple mobile interface for recording and viewing financial transactions.
+GigFinance provides a specialized financial management and shift-tracking experience, available both as a standalone **responsive web application** (`web/`) and as a mobile prototype.
 
 ## Features
 
-The current prototype includes:
+* **🔐 2-Step Login & Occupation Onboarding**: Support for Indian gig workers to select or enter their exact role (Delivery Boy / Partner, Freelancer / Digital Specialist, Cab & Auto Driver, Home Services, Courier, or custom occupation) with persistent client-side storage.
+* **💼 Real-time Retained Cash & Runway**: Immediate calculation of retained savings, operational outflows, and 3-month emergency reserve targets.
+* **🎯 Daily Shift Target Progress**: Visual daily goal tracking (e.g. ₹2,000/day) with in-place target customization.
+* **📊 Visual Native SVG Analytics**: 7-Day Inflow vs Outflow Trend curve with interactive tooltips, and Expense Donut breakdown (Fuel, Food on shift, Bike maintenance, Data).
+* **📋 Filterable Ledger & CSV Export**: Instant keyword searching, category filters, and 1-click CSV download for bank loan proofs or tax filing.
+* **⛽ Shift Fuel & Mileage Cost Calculator**: Live trip fuel cost calculation and net operating rate per km.
+* **🌓 Dark & Light Mode**: Slate Dark Mode and Clean Light Mode.
 
-* Income and expense tracking
-* Transaction management
-* Financial overview
-* Mobile interface designed for Android
-* Local development and testing through Expo Go
+## Technology Stack
 
-The application is still under development and additional features will be added in future versions.
-
-## Technology
-
-* React Native
-* Expo
-* JavaScript
-* Expo Go
-* Git
-* GitHub
+* **Web Application (`web/`)**: Semantic HTML5, Custom Vanilla CSS design system, Modular ES6 JavaScript, Native SVG Charts, `localStorage` persistence.
+* **Mobile Prototype (`src/`)**: React Native, Expo, JavaScript.
+* **Version Control**: Git & GitHub.
 
 ## Project Structure
 
